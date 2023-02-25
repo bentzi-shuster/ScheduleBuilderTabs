@@ -7,8 +7,6 @@ let input = document.querySelector("#input_column")
      *  - when a section is selected for a course
      *  - when a section is removed from a course
      * 
-     * PROBLEM: this is called too many times, and it is called when the page is loading, so if there is a disruption in the loading of the plan it the last saved plan will not be correct
-     * 
      */
 function updatePlan () {
 if(sessionStorage.getItem("StopPlanCorruption")=="true") return;

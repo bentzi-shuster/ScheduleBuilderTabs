@@ -86,7 +86,7 @@ it is also used to block saving during loading of a plan so that the plan is not
 Session storage also contains the last deleted tabid and its data. this is used to restore the last deleted tab if the user clicks the restore button.
 
 ### <a id="reporting-issues"></a>Reporting Issues
-If you find any issues, please report them on github.
+If you find any issues, please report them on [github](https://github.com/bentzi-shuster/ScheduleBuilderTabs/issues).
 alternatively, you can email me at <a href="mailto:bzs6@njit.edu">bzs6@njit.edu</a>
 please try to include the following information
 - browser (and version)
