@@ -65,6 +65,7 @@ function uuidv4() {//https://stackoverflow.com/questions/105034/create-guid-uuid
   } 
 
   function clearPlan(){
+    //clear all the courses
     document.querySelectorAll("a.close").forEach((close) => {
         close.click();
     });
@@ -214,9 +215,11 @@ function removeCourseFromPlan(coursecode){
     removeCourse(coursecode);   
 }
 function copyPlan(tabid){
+    //copy the plan to the clipboard
     navigator.clipboard.writeText(localStorage.getItem(tabid));
 }
 function pastePlan(tabid){
+    //paste the plan from the clipboard and load it
     navigator.clipboard.readText().then(text => {
         let json =JSON.parse(text);
         json.index = document.getElementById(tabid).getAttribute("data-index");
@@ -226,6 +229,7 @@ function pastePlan(tabid){
     });
 }
 function getNextIndex(){
+    //get the next index for a new tab
     let max = 0;
     for (let i=0;i<localStorage.length;i++){
         let key = localStorage.key(i);
@@ -241,6 +245,7 @@ function getNextIndex(){
 
 
 function restorePlan(){
+    //bring back the last deleted tab
     let tabid = sessionStorage.getItem("lastRemovedTab");
     let tabdata = JSON.parse(sessionStorage.getItem("lastRemovedTabData"));
     localStorage.setItem(tabid, JSON.stringify({name:tabdata.name, index:getNextIndex(), courses:tabdata.courses}));
