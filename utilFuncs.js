@@ -14,14 +14,13 @@ function addSection(coursecode,sectionnum){
     coursecode=coursecode.toString().toUpperCase();
     
     addCourse(coursecode);
-    if (sectionnum!==undefined){
+    console.log(sectionnum);
+    if(sectionnum){
+        console.log("test")
     sectionnum=sectionnum.toString().toUpperCase();
-    $('input#search_input').on("autocompleteselect", function(event, ui) {//when the autocomplete is selected
         setTimeout(() => {
             selectSection(coursecode,sectionnum);
         }, 0);
-    });
-        
     }
 }
 function removeCourse(coursecode){

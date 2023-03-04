@@ -13,14 +13,22 @@ document.querySelectorAll(".close").forEach((node) => {
 //if it is not, do nothing
 document.querySelector("div.sv-events-container").addEventListener("click", function (e) {
     if (e.target.tagName === "SPAN" && e.target.classList.contains("ui-icon-close")) {
-        let coursecode = e.target.parentNode.getAttribute("name");
-        console.log(coursecode);
-        removeCourseFromPlan(coursecode);
-        addCourse(coursecode);
-        savePlan();
-        // this is a hack to remove the section from the course
-    }
-})
+let id =document.querySelector(".tab.selected")?.id;
+if (id!=null){
+    let data = JSON.parse(localStorage.getItem(id));
+    let courses = data.courses;
+    let index =data.index;
+    let name = data.name;
+    //filter out the course and re-save the plan without the course section
+    let newcourses = courses.filter((course) => {
+        return course.coursecode!==e.target.parentNode.getAttribute("name");    
+    })
+    newcourses.push({"coursecode": e.target.parentNode.getAttribute("name")});
+    console.log(newcourses);
+localStorage.setItem(id, JSON.stringify({"name": name,"index":index, "courses": newcourses}));
+
+}
+    }})
 
 document.getElementById("clearButton").addEventListener("click", function () {
     clearPlan();
