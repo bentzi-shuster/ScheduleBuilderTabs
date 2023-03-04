@@ -168,9 +168,11 @@ function showContextMenu(e, tab) {
     // if the target if the close button, don't show the context menu
     //if there is session storage for the last deleted tab, show the restore tab button
     if(sessionStorage.getItem("lastRemovedTab")){
-        document.getElementById("restoreTab").style.display = "block";
+        document.getElementById("restoreTab").style.color = "black";
+        document.getElementById("restoreTab").style.pointerEvents = "";
     }else{
-        document.getElementById("restoreTab").style.display = "none";
+        document.getElementById("restoreTab").style.color = "lightgrey";
+        document.getElementById("restoreTab").style.pointerEvents = "none";
     }
 
 //show the context menu
