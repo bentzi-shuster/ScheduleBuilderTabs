@@ -222,6 +222,11 @@ function pastePlan(tabid){
     //paste the plan from the clipboard and load it
     navigator.clipboard.readText().then(text => {
         let json =JSON.parse(text);
+        //check that the json is valid
+        if (json.name==undefined||json.courses==undefined){
+            alert("Invalid plan");
+            return;
+        }
         json.index = document.getElementById(tabid).getAttribute("data-index");
         localStorage.setItem(tabid, JSON.stringify(json));
         
