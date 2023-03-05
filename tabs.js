@@ -312,6 +312,10 @@ function tabPointerDown(e,tab) {
     if(tab.hasAttribute("disabled")) {
         return;
       }
+if(e.button == 1){
+    e.preventDefault();
+    return;
+}
         //if the tab is not selected, select it
 if (!tab.classList.contains("selected")) {
 selectPlan(tab.id);

@@ -112,6 +112,7 @@ function uuidv4() {//https://stackoverflow.com/questions/105034/create-guid-uuid
     }
     
 function deletePlan(tabid){
+    if(sessionStorage.getItem("StopPlanCorruption")=="true") return;
     if(document.querySelectorAll(".tab").length===1) {
         alert("You can't delete the last tab!");
         return;
