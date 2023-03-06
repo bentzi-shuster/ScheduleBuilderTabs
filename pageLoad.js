@@ -4,9 +4,6 @@ window.addEventListener("load", function () {
   initDetailsPopup();
   //add the tabs
   regenerateTabs_pageLoad();
-  if(sessionStorage.getItem("StopPlanCorruption")){
-    sessionStorage.removeItem("StopPlanCorruption");
-  }
 });
 function regenerateTabs_pageLoad() {
   //clear the tab row

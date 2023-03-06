@@ -36,13 +36,12 @@ function loadPlan(courseArray){
         tab.setAttribute("disabled", "true");
     });
     document.querySelector("#plusbutton").setAttribute("disabled","true");
+    sessionStorage.setItem("StopPlanCorruption", "true");
     for (let i=0;i<courseArray.length;i++){
         let course = courseArray[i];
-        sessionStorage.setItem("StopPlanCorruption", "true");
         // console.log(course.coursecode,course.sectionnum);
         setTimeout(() => {
              addSection(course.coursecode,course.sectionnum);  
-             
         }, 60*i);
        
     }
