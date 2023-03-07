@@ -22,6 +22,7 @@ localStorage.setItem(tab.id, JSON.stringify({"name": "New Tab","index":index, "c
 
 
 tab.addEventListener("pointerup", function (e) {
+    if(e.target.classList.contains("closebutton"))return;
     if(e.button == 0){
         if(!tab.hasAttribute("disabled")){
     selectPlan(tab.id);
@@ -37,7 +38,7 @@ tab.addEventListener("pointerup", function (e) {
 
 
 
-tab.addEventListener("pointerdown",(e)=>{tabPointerDown(e,tab)})
+tab.addEventListener("pointerdown",(e)=>{if(e.target.classList.contains("closebutton"))return;tabPointerDown(e,tab)})
 tab.addEventListener("contextmenu", function (e) {
     e.preventDefault();
     showContextMenu(e, tab);
@@ -305,7 +306,6 @@ removeListeners = () => {
 }
 }
 function tabPointerDown(e,tab) {
-    e.preventDefault();
     if(e.target.classList.contains("closebutton")){
         return;
     }

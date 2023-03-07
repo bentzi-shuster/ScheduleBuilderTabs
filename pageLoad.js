@@ -42,11 +42,13 @@ function regenerateTabs_pageLoad() {
     tab.setAttribute("data-index", tabList[i][0].index);
     let close = document.createElement("button");
     close.classList.add("closebutton", "sv-closer", "ui-icon", "ui-icon-close");//close tab button
-    close.addEventListener("click", function () {
+    close.addEventListener("click", function (e) {
+      e.preventDefault();
       deletePlan(tab.id);
     });
     tab.appendChild(close);
     tab.addEventListener("pointerup", function (e) {
+      if(e.target.classList.contains("closebutton"))return;
       if (e.button == 0) {
         if (!tab.hasAttribute("disabled")) {
           selectPlan(tab.id);
@@ -56,7 +58,7 @@ function regenerateTabs_pageLoad() {
         deletePlan(tab.id);
       }
     });
-    tab.addEventListener("pointerdown",(e)=>{tabPointerDown(e,tab)})
+    tab.addEventListener("pointerdown",(e)=>{if(e.target.classList.contains("closebutton"))return;tabPointerDown(e,tab)});
 
     tab.addEventListener("contextmenu", function (e) {
       e.preventDefault();
