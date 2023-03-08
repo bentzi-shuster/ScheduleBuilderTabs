@@ -60,10 +60,12 @@ function regenerateTabs_pageLoad() {
     });
     tab.addEventListener("pointerdown",(e)=>{if(e.target.classList.contains("closebutton"))return;tabPointerDown(e,tab)});
 
-    tab.addEventListener("contextmenu", function (e) {
+    window.addEventListener("contextmenu", function (e) {
+      if (e.target===tab) {
       e.preventDefault();
       showContextMenu(e, tab);
-    });
+  }
+  })
     let delayTillpopup = 500;
     let timer;
     tab.addEventListener("pointerenter", function (e) {//the menu the shows the details of the plan on hover

@@ -39,9 +39,11 @@ tab.addEventListener("pointerup", function (e) {
 
 
 tab.addEventListener("pointerdown",(e)=>{if(e.target.classList.contains("closebutton"))return;tabPointerDown(e,tab)})
-tab.addEventListener("contextmenu", function (e) {
+window.addEventListener("contextmenu", function (e) {
+    if (e.target===tab) {
     e.preventDefault();
     showContextMenu(e, tab);
+}
 })
 // tab.addEventListener("dblclick", function () {
 //     renamePlan(tab.id);
@@ -102,6 +104,14 @@ let contextMenu = document.createElement("div");
 contextMenu.id = "contextMenu";
 contextMenu.classList.add("contextMenu");
 document.body.appendChild(contextMenu);
+
+contextMenu.addEventListener("contextmenu", function (e) {
+    e.preventDefault();
+    showContextMenu(e,document.getElementById(contextMenu.getAttribute("data-tab")));
+})
+
+
+
 //create the context menu items
 let deleteTab = document.createElement("button");
 deleteTab.id = "deleteTab";
@@ -182,9 +192,9 @@ contextMenu.style.display = "flex";
 contextMenu.style.left = e.clientX + "px";
 contextMenu.style.top = e.clientY + window.scrollY  + "px";
 //set the context menu's tab to the tab that was right clicked
-contextMenu.setAttribute("data-tab", e.target.id);
-if (e.target.classList.contains("closebutton")) {//if the target is the close button, set the context menu's tab to the close button's parent which is the tab
-    contextMenu.setAttribute("data-tab", e.target.parentElement.id);
+contextMenu.setAttribute("data-tab", tab.id);
+if (tab.classList.contains("closebutton")) {//if the target is the close button, set the context menu's tab to the close button's parent which is the tab
+    contextMenu.setAttribute("data-tab", tab.parentElement.id);
 }
 contextMenu.addEventListener("mouseleave", function () {
     contextMenu.style.display = "";
