@@ -162,16 +162,6 @@ pasteJSON.addEventListener("click", function () {
     document.getElementById("contextMenu").style.display = "";
 })
 contextMenu.appendChild(pasteJSON);
-//bring back last deleted tab
-let restoreTab = document.createElement("button");
-restoreTab.id = "restoreTab";
-restoreTab.classList.add("contextMenuItem");
-restoreTab.innerText = "Restore Last Deleted Tab";
-restoreTab.addEventListener("click", function () {
-    restorePlan();
-    document.getElementById("contextMenu").style.display = "";
-})
-contextMenu.appendChild(restoreTab);
 
 //merge tab with another tab to ther right
 let mergeTab = document.createElement("button");
@@ -190,6 +180,17 @@ mergeTab.addEventListener("click", function () {
     document.getElementById("contextMenu").style.display = "";
 })
 contextMenu.appendChild(mergeTab);
+
+//bring back last deleted tab
+let restoreTab = document.createElement("button");
+restoreTab.id = "restoreTab";
+restoreTab.classList.add("contextMenuItem");
+restoreTab.innerText = "Restore Last Deleted Tab";
+restoreTab.addEventListener("click", function () {
+    restorePlan();
+    document.getElementById("contextMenu").style.display = "";
+})
+contextMenu.appendChild(restoreTab);
 }
 function showContextMenu(e, tab) {
     // if the target if the close button, don't show the context menu
