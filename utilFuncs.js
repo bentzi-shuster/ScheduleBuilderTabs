@@ -272,3 +272,29 @@ function saveTabOrder() {
     }
     });
     }
+
+    function mergeIntoNewPlan(id1,id2){
+    //merge two plans into a new plan
+    let plan1 = JSON.parse(localStorage.getItem(id1));
+    let plan2 = JSON.parse(localStorage.getItem(id2));
+    //make a new course list without duplicate course codes
+    let newcourses = [];
+    plan1?.courses?.forEach((course) => {
+        if (!newcourses.some((c) => c.coursecode===course.coursecode)){
+            newcourses.push(course);
+        }
+    });
+    plan2?.courses?.forEach((course) => {
+        if (!newcourses.some((c) => c.coursecode===course.coursecode)){
+            newcourses.push(course);
+        }
+    });
+    //if there is a duplicate course code, keep the one from plan 1
+    //make a new plan
+    let newplan = {"name": plan1.name+"+"+plan2.name, "index": getNextIndex(), "courses": newcourses};
+    //save the new plan
+    localStorage.setItem(uuidv4(), JSON.stringify(newplan));
+    //add the new plan to the tabs
+    regenerateTabs_pageLoad();
+    
+    }

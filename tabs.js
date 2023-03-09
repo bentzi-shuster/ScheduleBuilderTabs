@@ -173,8 +173,24 @@ restoreTab.addEventListener("click", function () {
 })
 contextMenu.appendChild(restoreTab);
 
+//merge tab with another tab to ther right
+let mergeTab = document.createElement("button");
+mergeTab.id = "mergeTab";
+mergeTab.classList.add("contextMenuItem");
+mergeTab.innerText = "Merge Tab with Tab to the Right";
+mergeTab.addEventListener("click", function () {
+    let tabid = contextMenu.getAttribute("data-tab");
+    let nextTab = document.getElementById(tabid).nextElementSibling
+    if(nextTab.classList.contains("tab")){
+        mergeIntoNewPlan(tabid,nextTab.id);
+    }
+    else{
+        alert("There is no tab to the right of this tab");
+    }   
+    document.getElementById("contextMenu").style.display = "";
+})
+contextMenu.appendChild(mergeTab);
 }
-
 function showContextMenu(e, tab) {
     // if the target if the close button, don't show the context menu
     //if there is session storage for the last deleted tab, show the restore tab button
