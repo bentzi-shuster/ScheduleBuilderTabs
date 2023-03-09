@@ -22,6 +22,7 @@ Right clicking on a tab will give you more options.
 - copy - copy the tabs "code" to the clipboard
 - paste - paste the "code" copied above from the clipboard into the current tab and overwrite the current plan
 - restore - restore the last deleted tab and plan
+- merge - merge the current tab with the tab to the right. this creates a new tab with the courses from both plans.
 
 Tabs can also be removed by clicking the X on the tab or by clicking the mouse scroll wheel button. 
 
