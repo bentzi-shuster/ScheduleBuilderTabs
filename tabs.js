@@ -226,9 +226,10 @@ function showDetailsPopup(e, tab) {
 //show the details popup that shows the courses in the tab
 let detailsPopup = document.getElementById("detailsPopup");
 detailsPopup.style.display = "flex";
-detailsPopup.style.left =tab.getBoundingClientRect().left + "px";
-detailsPopup.style.top = tab.getBoundingClientRect().bottom +    window.scrollY + "px";
-detailsPopup.style.width = tab.getBoundingClientRect().width + "px";
+detailsPopup.style.left =tab.getBoundingClientRect().left+window.scrollX + "px";
+detailsPopup.style.top = tab.getBoundingClientRect().bottom + window.scrollY + "px";
+detailsPopup.style.width = tab.getBoundingClientRect().width -2 + "px";
+//2 is subtracted from the width to account for the border
 
 //set the details popup's tab to the tab that was hovered over
 detailsPopup.setAttribute("data-tab", e.target.id);
