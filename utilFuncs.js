@@ -42,7 +42,7 @@ function loadPlan(courseArray){
         // console.log(course.coursecode,course.sectionnum);
         setTimeout(() => {
              addSection(course.coursecode,course.sectionnum);  
-        }, 60*i);
+        }, 100*i);
        
     }
     setTimeout(() => {
@@ -72,6 +72,10 @@ function uuidv4() {//https://stackoverflow.com/questions/105034/create-guid-uuid
   function savePlan(tab){
     if(sessionStorage.getItem("StopPlanCorruption")=="true") return;
     if(tab?.id==="clone") return;
+    if(verifyPlan(tab.id)===false){
+        // console.log("plan not on page");
+        return;
+    }
      let courses=document.querySelectorAll(".course-name");
    let radios = document.querySelectorAll("input[type='radio']:checked")
    // get a list of all the courses, and the section they are in if they are in one

@@ -15,6 +15,10 @@ if(sessionStorage.getItem("StopPlanCorruption")=="true") return;
     if (tab==null){
        return;
     }
+    // if(verifyPlan(tab.id)===false){
+    //     // console.log("plan not on page");
+    //     return;
+    // }
     let courses=document.querySelectorAll(".course-name");
    let radios = document.querySelectorAll("input[type='radio']:checked")
    // get a list of all the courses, and the section they are in if they are in one
@@ -80,3 +84,21 @@ window.addEventListener("load", function () {
 const observer = new MutationObserver(updatePlan, {bubbles: true});
 // Start observing the target node for configured mutations
 observer.observe(input, { childList: true , subtree: true, attributes: true, characterData: true});
+
+
+function verifyPlan(tabid){
+   //check that all the courses in the plan are on the page
+    let plan = JSON.parse(localStorage.getItem(tabid));
+    let courses = plan.courses;
+    let courseNames = document.querySelectorAll(".course-name");
+    let courseNamesArray = [];
+    for (let i=0;i<courseNames.length;i++){
+        courseNamesArray.push(courseNames[i].innerText.replace(/\s/g, '').toUpperCase());
+    }
+    for (let i=0;i<courses.length;i++){
+        if (!courseNamesArray.includes(courses[i].coursecode)){
+            return false;
+        }
+    }
+    return true;
+}
