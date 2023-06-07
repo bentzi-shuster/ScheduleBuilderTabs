@@ -10,7 +10,7 @@ function selectSection(coursecode,sectionnum){
     }
     section?.click();
 }
-function checkIfCourseOnPage(coursecode){
+function courseIsOnPage(coursecode){
     //this checks if the course is on the page, not if it is in the plan!
     //this is to make sure we don't add a course twice and get a duplicate course error from the schedule builder
     coursecode=coursecode.toString().toUpperCase();
@@ -41,7 +41,7 @@ function addCourse(coursecode,sectionnum=null){
     autoselect_first_result = true;
     //both coursecode and sectionnum are strings! if sectionnum is a number, it causes problems
     coursecode=coursecode.toString().toUpperCase();
-    if(checkIfCourseOnPage(coursecode)){
+    if(courseIsOnPage(coursecode)){
         removeCourse(coursecode);
     }
     $('input#search_input')?.autocomplete("search", coursecode,0); //search for the course

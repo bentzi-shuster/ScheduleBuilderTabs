@@ -13,11 +13,14 @@
     plusbutton.title = "Make a new plan";
     ul.appendChild(plusbutton)
 plusbutton.onpointerup =(e)=>{
+    if(e.target.disabled){
+        return;
+    }
     postMessage({
         type : "FROM_PAGE", 
         text : "Create Empty Plan!",
         action: "createPlan",
-        planData: `[]`
+        planData:[]
       },
          
       "*");
@@ -49,7 +52,7 @@ plusbutton.onpointerup =(e)=>{
                 }
                 // li.id = Object.keys(event.data.data.planData[i])
                 // li.innerText = event.data.data.planData[i].planName
-                li.innerText = "plan " + (i+1) 
+                li.innerText = event.data.data.planData[Object.keys(event.data.data.planData)[i]].name
                 li.id = Object.keys(event.data.data.planData)[i]
                 addEventListenerstoTabNode(li)
                 ul.insertBefore(li, plusbutton)
@@ -67,6 +70,9 @@ plusbutton.onpointerup =(e)=>{
                         return
                     }
                     if (event.target.classList.contains("ui-state-active")){
+                        return
+                    }
+                    if (event.target.id==="plusbutton"){
                         return
                     }
                     let tabs = [...document.querySelectorAll("li.ui-state-default"),...document.querySelectorAll("li.ui-state-active")]
@@ -90,6 +96,17 @@ plusbutton.onpointerup =(e)=>{
                     // console.log(ui.item[0].innerText)
                     // when a tab is dragged
                 } );
+                //if is sorting, disable the plus button
+                $( "#sortable" ).on( "sortstart", function( event, ui ) {
+                    plusbutton.disabled = true
+                    console.log("plus button disabled")
+                }
+                );
+                $( "#sortable" ).on( "sortstop", function( event, ui ) {
+                    plusbutton.disabled = false
+                    console.log("plus button enabled")
+                }   
+                );
               } );
 
         }
@@ -120,7 +137,8 @@ plusbutton.onpointerup =(e)=>{
 
             if (event.data.text==="responding from background"&&event.data.data.from==="openPlan"){
                 clearPlan()
-                loadPlan(JSON.parse(event.data.data.planData))
+                // console.log(event.data.data.planData)    
+                loadPlan((event.data.data.planData.data))
 
 
             }

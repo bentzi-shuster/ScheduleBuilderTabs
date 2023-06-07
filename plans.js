@@ -11,17 +11,35 @@ console.log("plans.js loaded")
 
 function newPlan(planData){
 let planID = uuidv4();
-chrome.storage.sync.set({ [planID]:   planData }, function () {
+
+let planobj = { [planID]:   {data:planData,current:false,index:0,name:"New Plan"}}
+
+chrome.storage.sync.set(planobj, function () {
     console.log("Successfully created new plan")
   });
   return planID;
-
 }
+
 function updatePlan(planID,planData){
 chrome.storage.sync.set({ [planID]: planData }, function () {
     console.log("Successfully updated plan")
   });
 }
+
+renamePlan = function(planID,planName){
+  getPlan(planID).then(function(plan){
+    plan.name=planName;
+    updatePlan(planID,plan)
+  })
+}
+
+reindexPlan = function(planID,planIndex){
+  getPlan(planID).then(function(plan){
+    plan.index=planIndex;
+    updatePlan(planID,plan)
+  })
+}
+
 
 function deletePlan(planID){
   if(planID===null){
@@ -41,6 +59,32 @@ async function getPlan(planID){
   }
 
     return planData[planID];
+}
+async function getCurrentPlanId(){
+
+const plans = await chrome.storage.sync.get(null)
+if(Object.keys(plans).length===0){
+  return null;
+}
+ for (let plan of Object.keys(plans)) {
+    if(plans[plan].current===true){
+      return plan;
+    }
+ }  
+ return makePlanCurrent(Object.keys(plans)[0])
+
+}
+async function makePlanCurrent(planID){
+  const plans = await chrome.storage.sync.get(null)
+  for (let plan of Object.keys(plans)) {
+    if(plans[plan].current===true){
+      plans[plan].current=false;
+      updatePlan(plan,plans[plan])
+    }
+ }  
+  plans[planID].current=true;
+  updatePlan(planID,plans[planID])
+  return planID;
 }
 
 

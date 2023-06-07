@@ -43,19 +43,24 @@ function updatePlan () {
             courseArray.push({cc: course});
         }
     }
+    console.log("courseArray");
+    console.log(courseArray);
     if(document.querySelector(".ui-state-active")){
 postMessage({
     type : "FROM_PAGE", 
     text : "update the plan",
     action: "updatePlan",
     planID: document.querySelector(".ui-state-active").id,  
-    planData: JSON.stringify(courseArray)
+    planData: ({data:courseArray,name:"temp",current:false})
 },
      
   "*");
 
 }}
         
+let autoUpdate = false
+
+if (autoUpdate){
 
 window.addEventListener("load", function () {
     // add event listener to all input fields   
@@ -71,10 +76,26 @@ window.addEventListener("load", function () {
             document.querySelector("#input_column").addEventListener("pointerdown",updatePlan ,{bubbles: true});
 
 });
-//#input_column mutation observer
-// Create an observer that will call updatePlan when an element is added or removed from the input column
+
 const observer = new MutationObserver(updatePlan, {bubbles: true});
-// Start observing the target node for configured mutations
+
 observer.observe(input, { childList: true , subtree: true, attributes: true, characterData: true});
 
 
+document.querySelectorAll(".close").forEach((node) => {
+    node.addEventListener("click", function () {
+        let coursecode = node.parentNode.id.split("_")[0];
+        removeCourse(coursecode);
+        updatePlan();
+    });
+})
+
+document.querySelector("div.sv-events-container").addEventListener("click", function (e) {
+    if (e.target.tagName === "SPAN" && e.target.classList.contains("ui-icon-close")) {
+       updatePlan();
+    }})
+
+document.getElementById("clearButton").addEventListener("click", function () {
+    updatePlan();
+})
+}

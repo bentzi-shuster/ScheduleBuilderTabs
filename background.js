@@ -6,35 +6,51 @@ chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         if (request.source === "fromPage") {
           console.log("background script received: " + request.text);
-        if(request.action === "createPlan"){
+          switch(request.action){
+        case("createPlan"):
           console.log("createPlan action")
           let planID = newPlan(request.planData)
           postMessagetToPage(param={planID: planID,from: "createPlan"})
-        }
-        if(request.action === "updatePlan"){
+          break;
+          case("updatePlan"):
           updatePlan(request.planID,request.planData)
-          postMessagetToPage(param={from: "updatePlan"})
-        }
-        if(request.action === "deletePlan"){
+          postMessagetToPage(param={from: "updatePlan",planID: request.planID,planData: request.planData})
+          break;
+          case("deletePlan"):
           deletePlan(request.planID)
           postMessagetToPage(param={planID: request.planID,from: "deletePlan"})
-        }
-        if(request.action === "getPlan"){
+          break;  
+          case("getPlan"):
           getPlan(request.planID).then((planData)=>{
           postMessagetToPage(param={planData: planData,from: "getPlan"})
-          })}
-
-          if(request.action === "loadPlans"){
+          })
+          break;
+          case("loadPlans"):
             getPlan(request.planID).then((planData)=>{
             postMessagetToPage(param={planData: planData,from: "loadPlans"})
           })
-        }       
-         if(request.action === "openPlan"){
-          getPlan(request.planID).then((planData)=>{
+          break;
+          case("openPlan"):
+        getPlan(request.planID).then((planData)=>{
           postMessagetToPage(param={planData: planData,from: "openPlan"})
         })
-      }
+        break;
+          case("getCurrentPlanId"): 
+        getCurrentPlanId().then((planID)=>{
+          postMessagetToPage(param={planID: planID,from: "getCurrentPlanId"})
+        })
+        break;
+          case("makePlanCurrent"):
+          makePlanCurrent(request.planID).then((planID)=>{
+          postMessagetToPage(param={planID: planID,from: "makePlanCurrent"})
+        })
+        break;
+        default:
+        console.log("no action found")
+        postMessagetToPage(param={from: "no action found"})
+        break;
         
+      }
       }
     }
   );

@@ -14,6 +14,14 @@ window.addEventListener("message", (event) => {
 );
 
 
+postMessage({
+  type : "FROM_PAGE", 
+  text : "on load, get the current plan id",
+ action: "getCurrentPlanId",
+  }, 
+"*");
+
+
 /*
 
 to send a message to background use 
