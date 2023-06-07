@@ -42,6 +42,7 @@ plusbutton.onpointerup =(e)=>{
         if (event.data.type && (event.data.type === "FROM_EXTENSION")) {
 
             if (event.data.text==="responding from background"&&event.data.data.from==="loadPlans"){
+                sessionStorage.setItem("disableUpdate",true)
             let planLength = Object.keys(event.data.data.planData).length
             for(let i = 0; i < planLength; i++){
                 let li = document.createElement("li")
@@ -108,6 +109,7 @@ plusbutton.onpointerup =(e)=>{
                 }   
                 );
               } );
+              sessionStorage.removeItem("disableUpdate")
 
         }
 

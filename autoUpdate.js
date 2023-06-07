@@ -1,13 +1,4 @@
-let input = document.querySelector("#input_column")
-    /**
-     * this function will update the plan in local storage with the current state of the plan on the page
-     * it is called in the following places:
-     *  - when a course is added to the plan
-     *  - when a course is removed from the plan
-     *  - when a section is selected for a course
-     *  - when a section is removed from a course
-     * 
-     */
+
 function updatePlan () {
     let courses=document.querySelectorAll(".course-name");
    let radios = document.querySelectorAll("input[type='radio']:checked")
@@ -56,46 +47,51 @@ postMessage({
      
   "*");
 
+
 }}
         
-let autoUpdate = false
 
-if (autoUpdate){
+$.extend(scheduleEvents, {
+	_onInsertCourse: function(data) {
+		var tbl = formatCourse(data);
+		if (this.trigger("insert.course", [data, tbl]) !== false)
+			this.trigger("change.course", [tbl.id.replace("tbl_", "")]);
+        if (!sessionStorage.getItem("disableUpdate")){
+			setTimeout(() => {
+				updatePlan();
+			}, 0);
 
-window.addEventListener("load", function () {
-    // add event listener to all input fields   
-                document.querySelectorAll("ui-menu-item").forEach((node) => {
-                node.addEventListener("pointerdown",updatePlan ,{bubbles: true});
-                node.addEventListener("keydown",updatePlan ,{bubbles: true});
-                node.addEventListener("input",updatePlan ,{bubbles: true});
-                });
+		}else{
+			console.log("update disabled");
+		}
+	},
+	_onRemoveCourse: function(name) {
+		if (this.trigger("remove.course", [name]) !== false)
+			this.trigger("change.course", [name]);     
+			if (!sessionStorage.getItem("disableUpdate")){
+							setTimeout(() => {
+				updatePlan();
+			}, 0);
+				}else{
+					console.log("update disabled");
+				}
+	},
+	_onSelectSection: function(name, idx) {
+		var selRow = $("#" + name + " .sec-table tr").filter(":has(input:checked)")[0];
+		var changed = !selRow || selRow.rowIndex != idx;
+		if (this.trigger("select.section", [name, idx]) === false)
+			return false;
+		if (changed) {
+			this.trigger("change.section", [name, idx]);
+			changeCount++;
+		}
+        if (!sessionStorage.getItem("disableUpdate")){
+						setTimeout(() => {
+				updatePlan();
+			}, 0);
+			}else{
+				console.log("update disabled");
+			}
 
-            document.querySelector("#input_column").addEventListener("change",updatePlan ,{bubbles: true});
-            document.querySelector("#input_column").addEventListener("input",updatePlan ,{bubbles: true});
-            document.querySelector("#input_column").addEventListener("keydown",updatePlan ,{bubbles: true});
-            document.querySelector("#input_column").addEventListener("pointerdown",updatePlan ,{bubbles: true});
-
+	}
 });
-
-const observer = new MutationObserver(updatePlan, {bubbles: true});
-
-observer.observe(input, { childList: true , subtree: true, attributes: true, characterData: true});
-
-
-document.querySelectorAll(".close").forEach((node) => {
-    node.addEventListener("click", function () {
-        let coursecode = node.parentNode.id.split("_")[0];
-        removeCourse(coursecode);
-        updatePlan();
-    });
-})
-
-document.querySelector("div.sv-events-container").addEventListener("click", function (e) {
-    if (e.target.tagName === "SPAN" && e.target.classList.contains("ui-icon-close")) {
-       updatePlan();
-    }})
-
-document.getElementById("clearButton").addEventListener("click", function () {
-    updatePlan();
-})
-}
