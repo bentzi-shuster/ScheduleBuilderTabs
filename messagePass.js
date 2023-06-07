@@ -13,7 +13,9 @@ window.addEventListener("message", (event) => {
     }
     if (event.data.type && (event.data.type === "FROM_PAGE")) { // event.data.text contains the text from the page
       console.log("Content script received: " + event.data.text);
-    chrome.runtime.sendMessage({source: "fromPage", text: event.data.text}); // send the message to the background
+    chrome.runtime.sendMessage({source: "fromPage", text: event.data.text,
+    action: event.data.action, planData: event.data.planData, planID: event.data.planID,data: event.data
+  }); // send the message to the background
     }
   });
 
@@ -21,7 +23,7 @@ window.addEventListener("message", (event) => {
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
       // pass the message to the page
-      window.postMessage({ type: "FROM_EXTENSION", text: request.text }, "*");
+      window.postMessage({ type: "FROM_EXTENSION", text: request.message,data: request.data }, "*");
       sendResponse({message: "done"});
     }
   );

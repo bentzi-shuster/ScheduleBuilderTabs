@@ -1,19 +1,36 @@
 importScripts("startup.js")
-
+importScripts("plans.js")
 
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         if (request.source === "fromPage") {
           console.log("background script received: " + request.text);
+        if(request.action === "createPlan"){
+          console.log("createPlan action")
+          let planID = newPlan(request.planData)
+          postMessagetToPage(param={planID: planID,from: "createPlan"})
+        }
+        if(request.action === "updatePlan"){
+          updatePlan(request.planID,request.planData)
+          postMessagetToPage(param={from: "updatePlan"})
+        }
+        if(request.action === "deletePlan"){
+          deletePlan(request.planID)
+          postMessagetToPage(param={planID: request.planID,from: "deletePlan"})
+        }
+        if(request.action === "getPlan"){
+          getPlan(request.planID).then((planData)=>{
+          postMessagetToPage(param={planData: planData,from: "getPlan"})
+          })
+        
         }
       }
+    }
   );
 
 
-
-  function postMessagetToPage(messsage){
-          
+  function postMessagetToPage(param={}){          
             (async () => {
              
                 const [tab] = await chrome.tabs.query({active: true, lastFocusedWindow: true});
@@ -21,7 +38,7 @@ chrome.runtime.onMessage.addListener(
                   console.log("you need to have the tab selected / in focus")
                   return;
                 }
-                const response = await chrome.tabs.sendMessage(tab.id, {text: messsage});
+                const response = await chrome.tabs.sendMessage(tab.id, {message: "responding from background",data: param});
                 // do something with response here, not outside the function
                 console.log(response);
               })();
