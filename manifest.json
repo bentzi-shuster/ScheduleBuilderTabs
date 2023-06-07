@@ -1,13 +1,13 @@
 {
   "name": "NJIT Schedule Builder Tabs",
   "manifest_version": 3,
-  "version": "0.0.4",
+  "version": "0.0.5",
   "permissions": ["tabs","webRequest","scripting"],
   "description": "This extension adds a tab bar to NJIT's schedule builder. Tabs can save a schedule that is currently being built.",
   "content_scripts": [    {
       "matches": ["https://uisapppr3.njit.edu/scbldr/"],
       "css": ["styles.css"],
-      "js": ["scriptInject.js"]
+      "js": ["scriptInject.js","messagePass.js"]
     }
   ],
   "action": {
@@ -15,9 +15,10 @@
   },
   "background": {
     "service_worker": "background.js"
+    
   },
   "web_accessible_resources": [{
-    "resources": ["utilFuncs.js","gui.js","tabs.js","autoUpdatePlan.js","pageLoad.js","remove.js"],
+    "resources": ["main.js","tabs.js","utilFuncs.js"],
     "matches": ["<all_urls>"]
   }],
   "host_permissions": ["<all_urls>"],
