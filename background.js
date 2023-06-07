@@ -22,9 +22,19 @@ chrome.runtime.onMessage.addListener(
         if(request.action === "getPlan"){
           getPlan(request.planID).then((planData)=>{
           postMessagetToPage(param={planData: planData,from: "getPlan"})
+          })}
+
+          if(request.action === "loadPlans"){
+            getPlan(request.planID).then((planData)=>{
+            postMessagetToPage(param={planData: planData,from: "loadPlans"})
           })
+        }       
+         if(request.action === "openPlan"){
+          getPlan(request.planID).then((planData)=>{
+          postMessagetToPage(param={planData: planData,from: "openPlan"})
+        })
+      }
         
-        }
       }
     }
   );

@@ -8,7 +8,7 @@ chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         if (request.message === "dataLoaded") {
 
-let scriptarr=["main.js","tabs.js","utilFuncs.js"]; //the scripts to inject into the page
+let scriptarr=["main.js","tabs.js","utilFuncs.js","autoUpdate.js"]; //the scripts to inject into the page
 for (let i = 0; i < scriptarr.length; i++) {
 var s = document.createElement('script');
 s.src = chrome.runtime.getURL(scriptarr[i]);

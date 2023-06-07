@@ -7,32 +7,91 @@
     wrapper.id = "tabs"
     let ul = document.createElement("ul")
     ul.id="sortable"
+    let plusbutton = document.createElement("button");
+    plusbutton.id = "plusbutton";
+    plusbutton.innerText = "+";
+    plusbutton.title = "Make a new plan";
+    ul.appendChild(plusbutton)
+plusbutton.onpointerup =(e)=>{
+    postMessage({
+        type : "FROM_PAGE", 
+        text : "Create Empty Plan!",
+        action: "createPlan",
+        planData: `[]`
+      },
+         
+      "*");
+}
+
     postMessage({
           type : "FROM_PAGE", 
           text : "Requesting plan data for tab creation",
-          action: "getPlan",
+          action: "loadPlans",
           planID: null //gets all plans
         },
         "*");
+
+
     window.addEventListener("message", (event) => {
         if (event.source !== window) {
             return;
         }
         if (event.data.type && (event.data.type === "FROM_EXTENSION")) {
 
-            if (event.data.text==="responding from background"&&event.data.data.from==="getPlan"){
+            if (event.data.text==="responding from background"&&event.data.data.from==="loadPlans"){
             let planLength = Object.keys(event.data.data.planData).length
             for(let i = 0; i < planLength; i++){
                 let li = document.createElement("li")
+                if(i===0){
+                    li.classList.add("ui-state-active")
+                }else{
                 li.classList.add("ui-state-default")
+                }
                 // li.id = Object.keys(event.data.data.planData[i])
                 // li.innerText = event.data.data.planData[i].planName
                 li.innerText = "plan " + (i+1) 
                 li.id = Object.keys(event.data.data.planData)[i]
-                ul.appendChild(li)
+                addEventListenerstoTabNode(li)
+                ul.insertBefore(li, plusbutton)
             }
             wrapper.appendChild(ul)
             tabRow.appendChild(wrapper)
+
+            $( function() {
+                $( "#sortable" ).sortable({
+                    axis: "x"
+                })
+            
+                $( "#sortable" ).on( "click", function( event, ui ) {
+                    if(event.target.id==="sortable"){
+                        return
+                    }
+                    if (event.target.classList.contains("ui-state-active")){
+                        return
+                    }
+                    let tabs = [...document.querySelectorAll("li.ui-state-default"),...document.querySelectorAll("li.ui-state-active")]
+                    for (let i=0;i<tabs.length;i++){
+                        tabs[i].classList.remove("ui-state-active")
+                    }
+
+                    event.target.classList.add("ui-state-active")
+                    
+                    postMessage({
+                        type : "FROM_PAGE", 
+                        text : "open the requested plan",
+                        action: "openPlan",
+                        planID: event.target.id
+                      },
+                      "*");
+              
+    
+                } );
+                $( "#sortable" ).on( "sort", function( event, ui ) {
+                    // console.log(ui.item[0].innerText)
+                    // when a tab is dragged
+                } );
+              } );
+
         }
 
             if (event.data.text==="responding from background"&&event.data.data.from==="createPlan"){
@@ -42,7 +101,8 @@
                 // li.innerText = event.data.data.planData[i].planName
                 li.innerText = "plan " + (document.querySelectorAll("li.ui-state-default").length+1) 
                 li.id =event.data.data.planID
-                ul.appendChild(li)
+                addEventListenerstoTabNode(li)
+                ul.insertBefore(li, plusbutton)
                 
             
             }
@@ -56,32 +116,18 @@
                         element.remove()
                 });
             }
-
-                
-            
-            
-            
             }
 
+            if (event.data.text==="responding from background"&&event.data.data.from==="openPlan"){
+                clearPlan()
+                loadPlan(JSON.parse(event.data.data.planData))
 
+
+            }
 
         }
 
 
-
-
-        $( function() {
-            $( "#sortable" ).sortable({
-                axis: "x"
-            })
-        
-            $( "#sortable" ).on( "click", function( event, ui ) {
-                console.log("click")
-            } );
-            $( "#sortable" ).on( "sort", function( event, ui ) {
-                console.log(ui.item[0].innerText)
-            } );
-          } );
 
 
 })
@@ -104,3 +150,30 @@
     }
   }
 );
+
+
+
+function addEventListenerstoTabNode(TabNode){
+TabNode.addEventListener("pointerup", (e)=>{
+    e.preventDefault();
+    e.stopPropagation();
+    //middle click
+    if (e.button === 1) {
+        e.preventDefault();
+        //delete tab
+        if (TabNode.classList.contains("active")) {
+            return;
+        }
+        postMessage({
+            type : "FROM_PAGE", 
+            text : "Delete plan by middle click",
+            action: "deletePlan",
+            planID: TabNode.id,
+        },
+             
+          "*");
+    
+    }})
+    
+
+}
