@@ -9,8 +9,13 @@ chrome.runtime.onMessage.addListener(
           switch(request.action){
         case("createPlan"):
           console.log("createPlan action")
-          let planID = newPlan(request.planData)
-          postMessagetToPage(param={planID: planID,from: "createPlan"})
+          let  data = newPlan(request.planData,request.index,request.planName,request.current) 
+          let planID = Object.keys(data)[0]
+          let planData = data[planID]
+          let current = planData.current
+          let index = planData.index
+          let name = planData.name
+          postMessagetToPage(param={from: "createPlan",planID: planID,planData: planData,current: current,index: index,name: name})
           break;
           case("updatePlan"):
           updatePlan(request.planID,request.planData)
@@ -31,9 +36,12 @@ chrome.runtime.onMessage.addListener(
           })
           break;
           case("openPlan"):
-        getPlan(request.planID).then((planData)=>{
+          makePlanCurrent(request.planID).then(()=>{
+          getPlan(request.planID).then((planData)=>{
           postMessagetToPage(param={planData: planData,from: "openPlan"})
-        })
+          })
+          })
+
         break;
           case("getCurrentPlanId"): 
         getCurrentPlanId().then((planID)=>{

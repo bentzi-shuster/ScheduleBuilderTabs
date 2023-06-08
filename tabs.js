@@ -20,7 +20,8 @@ plusbutton.onpointerup =(e)=>{
         type : "FROM_PAGE", 
         text : "Create Empty Plan!",
         action: "createPlan",
-        planData:[]
+        planData:[],
+        
       },
          
       "*");
@@ -43,24 +44,40 @@ plusbutton.onpointerup =(e)=>{
 
             if (event.data.text==="responding from background"&&event.data.data.from==="loadPlans"){
                 sessionStorage.setItem("disableUpdate",true)
-            let planLength = Object.keys(event.data.data.planData).length
-            for(let i = 0; i < planLength; i++){
-                let li = document.createElement("li")
-                if(i===0){
-                    li.classList.add("ui-state-active")
-                }else{
-                li.classList.add("ui-state-default")
-                }
-                // li.id = Object.keys(event.data.data.planData[i])
-                // li.innerText = event.data.data.planData[i].planName
-                li.innerText = event.data.data.planData[Object.keys(event.data.data.planData)[i]].name
-                li.id = Object.keys(event.data.data.planData)[i]
-                addEventListenerstoTabNode(li)
+            let tabList = []
+            tabList = [...tabList, ...Object.entries(event.data.data.planData)]
+            tabList.sort((a, b) => a[1].index - b[1].index);
+            for(let i = 0; i < tabList.length; i++){
+                // let li = document.createElement("li")
+                // if(i===0){
+                //     li.classList.add("ui-state-active")
+                // }else{
+                // li.classList.add("ui-state-default")
+                // }
+                // // li.id = Object.keys(event.data.data.planData[i])
+                // // li.innerText = event.data.data.planData[i].planName
+                // // console.log(tabList);
+                // li.innerText = tabList[i][1].name
+                // li.id = tabList[i][0]
+                // addEventListenerstoTabNode(li)
+                li=makeTab({name:tabList[i][1].name,id:tabList[i][0],index:tabList[i][1].index,current:tabList[i][1].current})
                 ul.insertBefore(li, plusbutton)
             }
+if(tabList.length===0){
+    // let li = document.createElement("li")
+    // li.classList.add("ui-state-active")
+    // li.innerText = "plan 1"
+    // li.id = "plan1"
+    // addEventListenerstoTabNode(li)
+    // ul.insertBefore(li, plusbutton)
+    li=makeTab({name:"New Plan",current:true})
+    ul.insertBefore(li, plusbutton)
+
+}
+
             wrapper.appendChild(ul)
             tabRow.appendChild(wrapper)
-
+              sessionStorage.removeItem("disableUpdate")
             $( function() {
                 $( "#sortable" ).sortable({
                     axis: "x"
@@ -105,7 +122,7 @@ plusbutton.onpointerup =(e)=>{
                 );
                 $( "#sortable" ).on( "sortstop", function( event, ui ) {
                     plusbutton.disabled = false
-                    console.log("plus button enabled")
+                    //TODO update the index of the plan here
                 }   
                 );
               } );
@@ -114,13 +131,15 @@ plusbutton.onpointerup =(e)=>{
         }
 
             if (event.data.text==="responding from background"&&event.data.data.from==="createPlan"){
-                let li = document.createElement("li")
-                li.classList.add("ui-state-default")
-                // li.id = Object.keys(event.data.data.planData[i])
-                // li.innerText = event.data.data.planData[i].planName
-                li.innerText = "plan " + (document.querySelectorAll("li.ui-state-default").length+1) 
-                li.id =event.data.data.planID
-                addEventListenerstoTabNode(li)
+                // let li = document.createElement("li")
+                // li.classList.add("ui-state-default")
+                // // li.id = Object.keys(event.data.data.planData[i])
+                // // li.innerText = event.data.data.planData[i].planName
+                // li.innerText = event.data.data.planData[i].name
+                // li.id =event.data.data.planID
+                // addEventListenerstoTabNode(li)
+                console.log(event.data)
+                let li=makeTab({name:event.data.data.planData.name,id:event.data.data.planID,index:event.data.data.planData.index,current:event.data.data.planData.current})
                 ul.insertBefore(li, plusbutton)
                 
             
@@ -194,6 +213,24 @@ TabNode.addEventListener("pointerup", (e)=>{
           "*");
     
     }})
-    
+    TabNode.addEventListener("pointerdown", (e)=>{
+        if (e.button === 1) {
+        e.preventDefault();
+        e.stopPropagation();
+        }
+    })
+}
 
+function makeTab(data){
+    let li = document.createElement("li")
+    if(data.current){
+        li.classList.add("ui-state-active")
+    }else{
+    li.classList.add("ui-state-default")
+    }
+    li.innerText = data.name
+    li.id = data.id
+    addEventListenerstoTabNode(li)
+    
+    return li
 }

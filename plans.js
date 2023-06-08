@@ -9,15 +9,15 @@ console.log("plans.js loaded")
   } 
 
 
-function newPlan(planData){
+function newPlan(planData,index=0,name="New Plan",current=false){
 let planID = uuidv4();
 
-let planobj = { [planID]:   {data:planData,current:false,index:0,name:"New Plan"}}
+let planobj = { [planID]:   {data:planData,current:current,index:index,name:name}  }
 
 chrome.storage.sync.set(planobj, function () {
     console.log("Successfully created new plan")
   });
-  return planID;
+  return  planobj ;
 }
 
 function updatePlan(planID,planData){
