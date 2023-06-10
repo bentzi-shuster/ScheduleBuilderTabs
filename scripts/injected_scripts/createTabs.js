@@ -1,3 +1,4 @@
+console.log("%ccreateTabs.js loaded","color:green;font-weight:bold");
 (function createTabs() {
   let appendElm = document.getElementById("page");
   let tabRow = document.createElement("div");

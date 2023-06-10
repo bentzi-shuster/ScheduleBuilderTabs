@@ -1,4 +1,4 @@
-console.log("makeTabs.js loaded")
+console.log("%cmakeTabs.js loaded","color:green;font-weight:bold");
 function addEventListenerstoTabNode(TabNode){
     TabNode.addEventListener("pointerup", (e)=>{
         e.preventDefault();

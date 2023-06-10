@@ -1,4 +1,4 @@
-console.log("utilFuncs.js loaded");
+console.log("%cutilFuncs.js loaded","color:green;font-weight:bold");
 
 
 function selectSection(coursecode,sectionnum){

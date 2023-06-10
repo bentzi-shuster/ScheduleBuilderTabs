@@ -1,4 +1,4 @@
-console.log("messagePass.js loaded");
+console.log("%cmessagePass.js loaded","color:green;font-weight:bold");
 //---------------------------------------------------------------------------------------------
 // This script is injected into the page as a content script
 // It is used to pass messages between the page and the background script

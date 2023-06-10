@@ -1,3 +1,4 @@
+console.log("%cbackground.js loaded","color:green;font-weight:bold");
 importScripts("startup.js")
 importScripts("plans.js")
 

@@ -1,5 +1,4 @@
-console.log("startup.js loaded")
-
+console.log("%cstartup.js loaded","color:green;font-weight:bold");
 //when the request for https://uisapppr3.njit.edu/scbldr/include/datasvc.php?p=/ is done
 chrome.webRequest.onCompleted.addListener(
     function(details) {

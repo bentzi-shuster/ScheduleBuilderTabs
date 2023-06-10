@@ -1,4 +1,4 @@
-console.log("makePlusButton.js loaded");
+console.log("%cmakePlusButton.js loaded","color:green;font-weight:bold");
 function makePlusButton(){
     let plusbutton = document.createElement("button");
     plusbutton.id = "plusbutton";

@@ -1,5 +1,4 @@
-console.log("plans.js loaded")
-  
+console.log("%cplans.js loaded","color:green;font-weight:bold");
 
 
   function uuidv4() {//https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript

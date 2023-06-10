@@ -1,4 +1,4 @@
-console.log("scriptInject.js loaded");
+console.log("%cscriptInject.js loaded","color:green;font-weight:bold");
 //----------------------
 // this script is injected into the page as a content script
 // the use of this script is to inject other scripts into the page so that they can access the page's variables and functions

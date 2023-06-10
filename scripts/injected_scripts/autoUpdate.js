@@ -1,4 +1,4 @@
-
+console.log("%cautoUpdate.js loaded","color:green;font-weight:bold");
 function updatePlan () {
     let courses=document.querySelectorAll(".course-name");
    let radios = document.querySelectorAll("input[type='radio']:checked")
