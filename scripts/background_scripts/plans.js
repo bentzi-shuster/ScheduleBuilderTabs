@@ -25,20 +25,22 @@ chrome.storage.sync.set({ [planID]: planData }, function () {
   });
 }
 
-renamePlan = function(planID,planName){
+
+async function renamePlan(planID,planName){
   getPlan(planID).then(function(plan){
     plan.name=planName;
     updatePlan(planID,plan)
+    return planID;
   })
 }
 
-reindexPlan = function(planID,planIndex){
+
+function reindexPlan(planID,planIndex){
   getPlan(planID).then(function(plan){
     plan.index=planIndex;
     updatePlan(planID,plan)
   })
 }
-
 
 function deletePlan(planID){
   if(planID===null){

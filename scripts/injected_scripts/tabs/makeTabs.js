@@ -26,7 +26,33 @@ function addEventListenerstoTabNode(TabNode){
             e.stopPropagation();
             }
         })
+        TabNode.addEventListener("contextmenu", (e)=>{
+                e.preventDefault();
+let name = prompt("Enter new name for plan", TabNode.innerText);
+if (name === null) {
+    return;
+}
+postMessage({
+    type : "FROM_PAGE",
+    text : "Rename plan",
+    action: "renamePlan",
+    planID: TabNode.id,
+    planName: name,
+},
+);
+
+            
+        })
     }
+    
+    window.addEventListener("message", (event) => {
+    console.log(event.data);
+    if(event?.data?.data?.from === "renamePlan"){
+        document.getElementById(event.data.data.planID).innerText = event.data.data.planName;
+    }
+
+
+})
     
     function makeTab(data){
         let li = document.createElement("li")
@@ -41,3 +67,4 @@ function addEventListenerstoTabNode(TabNode){
         
         return li
     }
+  

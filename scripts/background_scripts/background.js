@@ -72,6 +72,11 @@ chrome.runtime.onMessage.addListener(
           console.log("plans are done loading");
         });
         break;
+        case("renamePlan"): 
+        renamePlan(request.planID,request.data.planName).then(()=>{
+          postMessagetToPage(param={planID: request.planID,planName:request.data.planName,from: "renamePlan"})
+        })
+        break;
         default:
         console.log("no action found")
         postMessagetToPage(param={from: "no action found"})
