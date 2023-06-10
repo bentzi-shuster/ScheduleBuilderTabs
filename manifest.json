@@ -18,7 +18,7 @@
     
   },
   "web_accessible_resources": [{
-    "resources": ["scripts/injected_scripts/tabs.js","scripts/injected_scripts/utilFuncs.js","scripts/injected_scripts/autoUpdate.js"],
+    "resources": ["scripts/injected_scripts/utilFuncs.js","scripts/injected_scripts/autoUpdate.js","scripts/injected_scripts/tabs/makePlusButton.js","scripts/injected_scripts/tabs/makeTabs.js","scripts/injected_scripts/createTabs.js"],
     "matches": ["<all_urls>"]
   }],
   "host_permissions": ["<all_urls>"],
