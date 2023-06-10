@@ -56,25 +56,20 @@ $.extend(scheduleEvents, {
 		var tbl = formatCourse(data);
 		if (this.trigger("insert.course", [data, tbl]) !== false)
 			this.trigger("change.course", [tbl.id.replace("tbl_", "")]);
-        if (!sessionStorage.getItem("disableUpdate")){
+       
 			setTimeout(() => {
 				updatePlan();
 			}, 0);
 
-		}else{
-			console.log("update disabled");
-		}
 	},
 	_onRemoveCourse: function(name) {
 		if (this.trigger("remove.course", [name]) !== false)
-			this.trigger("change.course", [name]);     
-			if (!sessionStorage.getItem("disableUpdate")){
+			this.trigger("change.course", [name]);
+
 							setTimeout(() => {
 				updatePlan();
 			}, 0);
-				}else{
-					console.log("update disabled");
-				}
+				
 	},
 	_onSelectSection: function(name, idx) {
 		var selRow = $("#" + name + " .sec-table tr").filter(":has(input:checked)")[0];
@@ -85,13 +80,11 @@ $.extend(scheduleEvents, {
 			this.trigger("change.section", [name, idx]);
 			changeCount++;
 		}
-        if (!sessionStorage.getItem("disableUpdate")){
+  
 						setTimeout(() => {
 				updatePlan();
 			}, 0);
-			}else{
-				console.log("update disabled");
-			}
+			
 
 	}
 });

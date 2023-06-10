@@ -18,8 +18,15 @@ chrome.runtime.onMessage.addListener(
           postMessagetToPage(param={from: "createPlan",planID: planID,planData: planData,current: current,index: index,name: name})
           break;
           case("updatePlan"):
-          updatePlan(request.planID,request.planData)
-          postMessagetToPage(param={from: "updatePlan",planID: request.planID,planData: request.planData})
+          chrome.storage.local.get("plansLoading", function(result) {
+          if (result.plansLoading){
+            console.log("plans are updating, loading, or creating, cant update")
+          }else{
+            console.log("plans are not updating, loading, or creating, doing update")
+            updatePlan(request.planID,request.planData)
+            postMessagetToPage(param={from: "updatePlan",planID: request.planID,planData: request.planData})
+          }
+          });
           break;
           case("deletePlan"):
           deletePlan(request.planID)
@@ -33,7 +40,13 @@ chrome.runtime.onMessage.addListener(
           case("loadPlans"):
             getPlan(request.planID).then((planData)=>{
             postMessagetToPage(param={planData: planData,from: "loadPlans"})
+          }).then(()=>{
+            //set in session storage that the plans are loading, so the plan doesnt get updated
+            chrome.storage.local.set("plansLoading",true, function() {
+              console.log("plans are loading");
+            });
           })
+
           break;
           case("openPlan"):
           makePlanCurrent(request.planID).then(()=>{
@@ -52,6 +65,11 @@ chrome.runtime.onMessage.addListener(
           makePlanCurrent(request.planID).then((planID)=>{
           postMessagetToPage(param={planID: planID,from: "makePlanCurrent"})
         })
+        break;
+        case("doneLoadingPlans"):
+        chrome.storage.local.set("plansLoading",false, function() {
+          console.log("plans are done loading");
+        });
         break;
         default:
         console.log("no action found")

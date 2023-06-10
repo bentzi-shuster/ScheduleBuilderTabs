@@ -43,7 +43,6 @@ plusbutton.onpointerup =(e)=>{
         if (event.data.type && (event.data.type === "FROM_EXTENSION")) {
 
             if (event.data.text==="responding from background"&&event.data.data.from==="loadPlans"){
-                sessionStorage.setItem("disableUpdate",true)
             let tabList = []
             tabList = [...tabList, ...Object.entries(event.data.data.planData)]
             tabList.sort((a, b) => a[1].index - b[1].index);
@@ -77,7 +76,6 @@ if(tabList.length===0){
 
             wrapper.appendChild(ul)
             tabRow.appendChild(wrapper)
-              sessionStorage.removeItem("disableUpdate")
             $( function() {
                 $( "#sortable" ).sortable({
                     axis: "x"
@@ -126,7 +124,16 @@ if(tabList.length===0){
                 }   
                 );
               } );
-              sessionStorage.removeItem("disableUpdate")
+              setTimeout(() => {
+                                postMessage({
+                    type : "FROM_PAGE",
+                    text : "done loading plans",
+                    action: "doneLoadingPlans",
+                    planID: null
+                },
+                "*");
+              }, 1);
+
 
         }
 

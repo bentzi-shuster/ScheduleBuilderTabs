@@ -1,3 +1,4 @@
+console.log("scriptInject.js loaded");
 //----------------------
 // this script is injected into the page as a content script
 // the use of this script is to inject other scripts into the page so that they can access the page's variables and functions
@@ -8,7 +9,7 @@ chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         if (request.message === "dataLoaded") {
 
-let scriptarr=["main.js","tabs.js","utilFuncs.js","autoUpdate.js"]; //the scripts to inject into the page
+let scriptarr=["scripts/injected_scripts/main.js","scripts/injected_scripts/tabs.js","scripts/injected_scripts/utilFuncs.js","scripts/injected_scripts/autoUpdate.js"]; //the scripts to inject into the page
 for (let i = 0; i < scriptarr.length; i++) {
 var s = document.createElement('script');
 s.src = chrome.runtime.getURL(scriptarr[i]);
