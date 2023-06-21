@@ -64,6 +64,10 @@ console.log("%ccreateTabs.js loaded","color:green;font-weight:bold");
             if (event.target.id === "plusbutton") {
               return;
             }
+            //if button
+            if (event.target.classList.contains("tabDropdownButton")) {
+              return;
+            }
             let tabs = [
               ...document.querySelectorAll("li.ui-state-default"),
               ...document.querySelectorAll("li.ui-state-active"),
@@ -73,6 +77,7 @@ console.log("%ccreateTabs.js loaded","color:green;font-weight:bold");
             }
 
             event.target.classList.add("ui-state-active");
+
 
             postMessage(
               {

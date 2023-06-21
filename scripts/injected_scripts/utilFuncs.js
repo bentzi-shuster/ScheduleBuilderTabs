@@ -15,10 +15,7 @@ function courseIsOnPage(coursecode){
     //this is to make sure we don't add a course twice and get a duplicate course error from the schedule builder
     coursecode=coursecode.toString().toUpperCase();
     let course = document.querySelector(`#${coursecode}_button_title`);
-    if(course){
-        return true;
-    }
-    return false;
+    return course?true:false;
 }
 
 

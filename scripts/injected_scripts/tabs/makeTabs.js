@@ -26,23 +26,23 @@ function addEventListenerstoTabNode(TabNode){
             e.stopPropagation();
             }
         })
-        TabNode.addEventListener("contextmenu", (e)=>{
-                e.preventDefault();
-let name = prompt("Enter new name for plan", TabNode.innerText);
-if (name === null) {
-    return;
-}
-postMessage({
-    type : "FROM_PAGE",
-    text : "Rename plan",
-    action: "renamePlan",
-    planID: TabNode.id,
-    planName: name,
-},
-);
+//         TabNode.addEventListener("contextmenu", (e)=>{
+//                 e.preventDefault();
+// let name = prompt("Enter new name for plan", TabNode.innerText);
+// if (name === null) {
+//     return;
+// }
+// postMessage({
+//     type : "FROM_PAGE",
+//     text : "Rename plan",
+//     action: "renamePlan",
+//     planID: TabNode.id,
+//     planName: name,
+// },
+// );
 
             
-        })
+        // })
     }
     
     window.addEventListener("message", (event) => {
@@ -57,12 +57,13 @@ postMessage({
     function makeTab(data){
         let li = document.createElement("li")
         if(data.current){
-            li.classList.add("ui-state-active")
+            li.classList.add("ui-state-active","ui-state-default")
         }else{
         li.classList.add("ui-state-default")
         }
         li.innerText = data.name
         li.id = data.id
+        li.classList.add("customTab")   
         addEventListenerstoTabNode(li)
         
         return li
